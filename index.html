@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title></title>
+   <!-- The core Firebase JS SDK is alwaysrequired and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<style type="text/css">
+	@import url('https://fonts.googleapis.com/css?family=Kanit&display');
+	body{
+		font-family: 'Kanit', sans-serif;
+	}
+	#content{
+		position: 10px 25px;
+	}
+	p{
+		background-color: #6A25A0;
+		color:#ddd;
+		width: 40%;
+		padding: 10px 25px;
+		border-radius:10px 10px 10px 0px;
+		box-shadow: 0px 0px 5px 0px #ddd;
+		margin-bottom: 20px;
+		margin-top:5px; 
+	}
+	a{
+		font-size: 8px;
+		opacity: 0.8px;
+	}
+</style>
+
+
+<script>
+  // เราพิมพ์ไม่ครบ มันเลยบัค ไม่ครบไม่พอดันพิมพ์ผิดอีกด้วย แต่ตอนนี้แก้แล้ว ดูดีๆด้วยเวลาพิมพ์เราพิมพ์ผืดไปเยอะเลย
+  // เสร็จแล้ว รอของอิ๋งเสร็จถึงจะทดสอบได้ เอาโค๊ตเดิมไหม??
+  var firebaseConfig = {
+    apiKey: "AIzaSyARM8X6NqR5X06E9RlA2msDcOn-7swf-VA",
+    authDomain: "thk-2019.firebaseapp.com",
+    databaseURL: "https://thk-2019.firebaseio.com",
+    projectId: "thk-2019",
+    storageBucket: "thk-2019.appspot.com",
+    messagingSenderId: "152189405672",
+    appId: "1:152189405672:web:eb94b696b8e11480"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+	var content=document.getElementById("content");
+		var ref=firebase.database().ref("chat/user");
+	ref.once("value",function(snapshot){
+		let texts=snapshot.val();
+		let t=texts;
+		console.log(texts);
+		t=t.split(",");
+		for(let i=0;i<t.length;i++){
+			create(t[i]);
+		}
+
+	},function(err){
+		console.log("error");
+
+	});
+	ref.on("value",function(snapshot){
+		let texts=snapshot.val();
+		let t=texts;
+		console.log(texts);
+		t=t.split(",");
+		t[t.length-1];
+		
+
+	},function(err){
+		console.log("error");
+
+	});
+	function create(text){
+		text=text.substring(1,text.length-1);
+		let splits=text.split("||");
+$("#content").append("<a>"+splits[0]+" ได้ส่งข้อความ</a><p>"+splits[1]+"</p>");
+window.scrollTo(0,document.body.scrollHeight);
+	}
+var start=true;
+    ref.on("value",function(snapshot){
+    	if(start){
+    		start=false;
+
+    	}else{
+    		let t=snapshot.val().substring(1,snapshot.val().length-1);
+    		t=t.split(",");
+    		console.log(t[t.length-1]);
+    		create(t[t.length-1]);
+    	}
+    },function(err){
+    	console.log("error");
+    });
+</script>
+
+</head>    
+<body>
+<div id="content">
+</div>
+</body>
+</html>
